@@ -69,9 +69,11 @@ main(int argc, char *argv[])
 		mktime(tm);
 	}
 
-	printf("        Mo Tu We Th Fr Sa Su\n");
-
 	int color = isatty(1);
+
+	printf("        %sMo Tu We Th Fr Sa Su%s\n",
+	    color ? "\e[4m" : "",
+	    color ? "\e[0m" : "");
 
 	for (int weeks = 0, months = 0;
 	     flagi || (max_months && months < max_months) || (weeks < max_weeks);
