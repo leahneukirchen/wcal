@@ -1,0 +1,54 @@
+WCAL(1)                     General Commands Manual                    WCAL(1)
+
+NAME
+     wcal – ISO weekly calendar
+
+SYNOPSIS
+     wcal [-13yci] [-d YYYY-MM-DD]
+
+DESCRIPTION
+     The wcal utility prints a week-oriented calendar.  Each week is prefixed
+     with its ISO week number.
+
+     When outputting to a TTY, the current day is shown in reverse video.
+
+     The options are as follows:
+
+     -1      Show the calendar for the current month.  (This is the default.)
+
+     -3      Show the calendar for the previous, current, and next month.
+
+     -y      Show the calendar for the whole year.
+
+     -c      Show the calendar for the current week.
+
+     -i      Show the calendar starting from the current week indefinitely.
+
+     -d YYYY-MM-DDD
+             Show the calendar for a different date than today.
+
+EXIT STATUS
+     The wcal utility exits 0 on success, and >0 if an error occurs.
+
+SEE ALSO
+     cal(1)
+
+     wcal is inspired by this online tool:
+     https://demeyere.design/journal/plain-text-calendar
+
+AUTHORS
+     Leah Neukirchen <leah@vuxu.org>
+
+LICENSE
+     wcal is in the public domain.
+
+     To the extent possible under law, the creator of this work has waived all
+     copyright and related or neighboring rights to this work.
+
+     http://creativecommons.org/publicdomain/zero/1.0/
+
+BUGS
+     This program uses mktime(3) for date manipulation and does not respect
+     the Gregorian calendar reform.
+
+Void Linux                      March 28, 2020                      Void Linux
