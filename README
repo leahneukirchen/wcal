@@ -4,7 +4,7 @@ NAME
      wcal – ISO weekly calendar
 
 SYNOPSIS
-     wcal [-13yci] [-d YYYY-MM-DD]
+     wcal [-13yci] [-d YYYY[-MM[-DD]]]
 
 DESCRIPTION
      The wcal utility prints a week-oriented calendar.  Each week is prefixed
@@ -24,8 +24,9 @@ DESCRIPTION
 
      -i      Show the calendar starting from the current week indefinitely.
 
-     -d YYYY-MM-DDD
-             Show the calendar for a different date than today.
+     -d YYYY[-MM[-DD]]
+             Show the calendar for a different date than today.  Implies -y in
+             case only a year is passed.
 
 EXIT STATUS
      The wcal utility exits 0 on success, and >0 if an error occurs.

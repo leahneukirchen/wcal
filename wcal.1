@@ -7,7 +7,7 @@
 .Sh SYNOPSIS
 .Nm
 .Op Fl 13yci
-.Op Fl d Ar YYYY-MM-DD
+.Op Fl d Ar YYYY Ns Op Ar -MM Ns Op Ar -DD
 .Sh DESCRIPTION
 The
 .Nm
@@ -29,8 +29,11 @@ Show the calendar for the whole year.
 Show the calendar for the current week.
 .It Fl i
 Show the calendar starting from the current week indefinitely.
-.It Fl d Ar YYYY-MM-DDD
+.It Fl d Ar YYYY Ns Op Ar -MM Ns Op Ar -DD
 Show the calendar for a different date than today.
+Implies
+.Fl y
+in case only a year is passed.
 .El
 .Sh EXIT STATUS
 .Ex -std

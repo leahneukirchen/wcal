@@ -16,11 +16,43 @@
  */
 
 #define _XOPEN_SOURCE 700
-#include <time.h>
+#include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 
 int flag1, flag3, flagc, flagi, flagy;
+
+void
+parse_isodate(char *optarg, struct tm *tm)
+{
+	tm->tm_hour = 12;  /* avoid DST problems */
+	tm->tm_min = tm->tm_sec = 0;
+	tm->tm_mday = 1;
+	tm->tm_mon = 0;
+
+	if (isdigit(optarg[0]) &&
+	    isdigit(optarg[1]) &&
+	    isdigit(optarg[2]) &&
+	    isdigit(optarg[3]) &&
+	    (!optarg[4] || optarg[4] == '-')) {
+		tm->tm_year = atoi(optarg) - 1900;
+
+		if (!optarg[4]) {
+			flagy = 1;
+		} else if (isdigit(optarg[5]) && isdigit(optarg[6]) &&
+		    (!optarg[7] || optarg[7] == '-')) {
+			tm->tm_mon = atoi(optarg+5) - 1;
+
+			if (isdigit(optarg[8]) && isdigit(optarg[9]) &&
+			    (!optarg[10] || optarg[10] == '-'))
+				tm->tm_mday = atoi(optarg+8);
+		}
+	}
+
+	mktime(tm);
+}
 
 int
 main(int argc, char *argv[])
@@ -36,8 +68,7 @@ main(int argc, char *argv[])
 		case 'c': flagc = 1; break;
 		case 'y': flagy = 1; break;
 		case 'i': flagi = 1; break;
-		// XXX error handling, or write a parser oneself...
-		case 'd': strptime(optarg, "%Y-%m-%d", tm); break;
+		case 'd': parse_isodate(optarg, tm); break;
 		}
 
 	tm->tm_hour = 12;  /* avoid DST problems */
