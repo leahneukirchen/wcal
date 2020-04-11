@@ -22,7 +22,7 @@
 #include <time.h>
 #include <unistd.h>
 
-int flag1, flag3, flagc, flagi, flagy;
+int flag1, flag3, flagc, flagC, flagi, flagy;
 
 void
 parse_isodate(char *optarg, struct tm *tm)
@@ -60,11 +60,12 @@ main(int argc, char *argv[])
 	struct tm *tm = gmtime(&now);
 
 	int c;
-	while ((c = getopt(argc, argv, "13cid:y")) != -1)
+	while ((c = getopt(argc, argv, "13cCid:y")) != -1)
 		switch (c) {
 		case '1': flag1 = 1; break;
 		case '3': flag3 = 1; break;
 		case 'c': flagc = 1; break;
+		case 'C': flagC = 1; break;
 		case 'y': flagy = 1; break;
 		case 'i': flagi = 1; break;
 		case 'd': parse_isodate(optarg, tm); break;
@@ -98,7 +99,7 @@ main(int argc, char *argv[])
 		mktime(tm);
 	}
 
-	int color = isatty(1);
+	int color = isatty(1) || flagC;
 
 	printf("        %sMo Tu We Th Fr Sa Su%s\n",
 	    color ? "\e[4m" : "",
