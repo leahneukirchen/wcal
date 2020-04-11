@@ -27,8 +27,7 @@ int flag1, flag3, flagc, flagi, flagy;
 void
 parse_isodate(char *optarg, struct tm *tm)
 {
-	tm->tm_hour = 12;  /* avoid DST problems */
-	tm->tm_min = tm->tm_sec = 0;
+	tm->tm_hour = tm->tm_min = tm->tm_sec = 0;
 	tm->tm_mday = 1;
 	tm->tm_mon = 0;
 
@@ -58,7 +57,7 @@ int
 main(int argc, char *argv[])
 {
 	time_t now = time(0);
-	struct tm *tm = localtime(&now);
+	struct tm *tm = gmtime(&now);
 
 	int c;
 	while ((c = getopt(argc, argv, "13cid:y")) != -1)
@@ -71,9 +70,7 @@ main(int argc, char *argv[])
 		case 'd': parse_isodate(optarg, tm); break;
 		}
 
-	tm->tm_isdst = -1;  /* compute it */
-	tm->tm_hour = 12;  /* avoid DST problems */
-	tm->tm_min = tm->tm_sec = 0;
+	tm->tm_hour = tm->tm_min = tm->tm_sec = 0;
 
 	int today_mday = tm->tm_mday;
 	int today_mon = tm->tm_mon;
