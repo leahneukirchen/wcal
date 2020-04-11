@@ -71,6 +71,7 @@ main(int argc, char *argv[])
 		case 'd': parse_isodate(optarg, tm); break;
 		}
 
+	tm->tm_isdst = -1;  /* compute it */
 	tm->tm_hour = 12;  /* avoid DST problems */
 	tm->tm_min = tm->tm_sec = 0;
 
