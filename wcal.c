@@ -121,8 +121,7 @@ main(int argc, char *argv[])
 			printf("%s ", buf);
 			months++;
 		} else if ((tm->tm_mon == 0 && tm->tm_yday < 14) || weeks == 1) {
-			strftime(buf, sizeof buf, "%Y", tm);
-			printf("%s", buf);
+			printf("%04d", tm->tm_year + 1900);
 		} else {
 			printf("    ");
 		}
