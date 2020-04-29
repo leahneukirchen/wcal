@@ -56,6 +56,8 @@ parse_isodate(char *optarg, struct tm *tm)
 int
 main(int argc, char *argv[])
 {
+	setenv("TZ", "", 1);
+
 	time_t now = time(0);
 	struct tm *tm = gmtime(&now);
 
