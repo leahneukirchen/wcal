@@ -56,10 +56,19 @@ parse_isodate(char *optarg, struct tm *tm)
 int
 main(int argc, char *argv[])
 {
-	setenv("TZ", "", 1);
-
 	time_t now = time(0);
-	struct tm *tm = gmtime(&now);
+	struct tm *tm = localtime(&now);
+	struct tm tm2 = {
+		.tm_year = tm->tm_year,
+		.tm_mon = tm->tm_mon,
+		.tm_mday = tm->tm_mday
+	};
+
+	setenv("TZ", "", 1);
+	tzset();
+
+	now = mktime(&tm2);
+	tm = gmtime(&now);
 
 	int c;
 	while ((c = getopt(argc, argv, "13cCid:y")) != -1)
