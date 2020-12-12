@@ -1,4 +1,4 @@
-.Dd March 28, 2020
+.Dd December 12, 2020
 .Dt WCAL 1
 .Os
 .Sh NAME
@@ -55,7 +55,7 @@ has waived all copyright and related or
 neighboring rights to this work.
 .Pp
 .Lk http://creativecommons.org/publicdomain/zero/1.0/
-.Sh BUGS
-This program uses
-.Xr mktime 3
-for date manipulation and does not respect the Gregorian calendar reform.
+.Sh CAVEATS
+This program uses a proleptic Gregorian Calendar
+and may yield unexpected results before 1752.
+The year 0000 starts on a Saturday.

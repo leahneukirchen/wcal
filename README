@@ -48,8 +48,8 @@ LICENSE
 
      http://creativecommons.org/publicdomain/zero/1.0/
 
-BUGS
-     This program uses mktime(3) for date manipulation and does not respect
-     the Gregorian calendar reform.
+CAVEATS
+     This program uses a proleptic Gregorian Calendar and may yield unexpected
+     results before 1752.  The year 0000 starts on a Saturday.
 
-Void Linux                      March 28, 2020                      Void Linux
+Void Linux                     December 12, 2020                    Void Linux
