@@ -10,7 +10,8 @@ DESCRIPTION
      The wcal utility prints a week-oriented calendar.  Each week is prefixed
      with its ISO week number.
 
-     When outputting to a TTY, the current day is shown in reverse video.
+     When outputting to a TTY, the current day, week day, and week are shown
+     in reverse video.
 
      The options are as follows:
 
@@ -52,4 +53,4 @@ CAVEATS
      This program uses a proleptic Gregorian Calendar and may yield unexpected
      results before 1752.  The year 0000 starts on a Saturday.
 
-Void Linux                     December 12, 2020                    Void Linux
+Void Linux                     January 30, 2021                     Void Linux
