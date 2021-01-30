@@ -29,6 +29,11 @@ const char monthname[13][4] = {
 	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
 
+const char wdayname[8][3] = {
+	"  ",
+	"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"
+};
+
 /* all args are 1-indexed */
 long
 ymd2jd(int year, int month, int day)
@@ -112,6 +117,8 @@ main(int argc, char *argv[])
 	int d = tm->tm_mday;
 	int w;
 	int i;
+	int cw;
+	int ci;
 
 	int c;
 	while ((c = getopt(argc, argv, "13cCid:y")) != -1)
@@ -127,6 +134,7 @@ main(int argc, char *argv[])
 		}
 
 	long today = ymd2jd(y, m, d);
+	jd2ymdwi(today, &y, &m, &d, &cw, &ci);
 
 	int max_weeks = 1;
 	int max_months = 0;
@@ -151,14 +159,31 @@ main(int argc, char *argv[])
 
 	int color = isatty(1) || flagC;
 
-	printf("        %sMo Tu We Th Fr Sa Su%s\n",
-	    color ? "\e[4m" : "",
-	    color ? "\e[0m" : "");
+	printf("        ");
+	if (color)
+		printf("\e[4m");
+	for (int wd = 1; wd <= 7; wd++) {
+		if (color && wd == cw)
+			printf("\e[7m");
+		printf("%s", wdayname[wd]);
+		if (color && wd == cw)
+			printf("\e[27m");
+		if (wd < 7)
+			printf(" ");
+	}
+	if (color)
+		printf("\e[0m");
+	printf("\n");
 
 	for (int weeks = 0, months = 0;
 	     flagi || (max_months && months < max_months) || (weeks < max_weeks);
 	     weeks++) {
-		printf("%02d ", i);
+		if (color && i == ci)
+			printf("\e[7m");
+		printf("%02d", i);
+		if (color && i == ci)
+			printf("\e[27m");
+		printf(" ");
 
 		int ey, em, ed, ew, ei;
 		jd2ymdwi(jd + 6, &ey, &em, &ed, &ew, &ei);   /* end of week */
@@ -176,7 +201,7 @@ main(int argc, char *argv[])
 			printf(" %s%2d%s",
 			    color && (jd == today) ? "\e[7m" : "",
 			    d,
-			    color && (jd == today) ? "\e[0m" : "");
+			    color && (jd == today) ? "\e[27m" : "");
 
 			jd++;
 			jd2ymdwi(jd, &y, &m, &d, &w, &i);
