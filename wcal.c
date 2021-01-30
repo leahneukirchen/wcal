@@ -123,6 +123,7 @@ main(int argc, char *argv[])
 		case 'y': flagy = 1; break;
 		case 'i': flagi = 1; break;
 		case 'd': parse_isodate(optarg, &y, &m, &d); break;
+		case '?': exit(1);
 		}
 
 	long today = ymd2jd(y, m, d);
