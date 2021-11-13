@@ -159,7 +159,12 @@ main(int argc, char *argv[])
 
 	int color = isatty(1) || flagC;
 
-	printf("        ");
+	if (color)
+		printf("\e[4m");
+	printf("Wk");
+	if (color)
+		printf("\e[0m");
+	printf("      ");
 	if (color)
 		printf("\e[4m");
 	for (int wd = 1; wd <= 7; wd++) {
