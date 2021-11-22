@@ -61,7 +61,8 @@ ymd2jd(int year, int month, int day)
 
 /* Mon = 1, Sun = 7 */
 void
-jd2ymdwi(long jd, int *year, int *month, int *day, int *wday, int *isoweek)
+jd2ymdwi(long jd, int *year, int *month, int *day, int *wday,
+    int *isoweek, int *isoyear)
 {
 	int _;
 	long e = 4*(jd+1401+(4*jd+274277)/146097*3/4-38) + 3;
@@ -69,16 +70,18 @@ jd2ymdwi(long jd, int *year, int *month, int *day, int *wday, int *isoweek)
 
 	*day = h%153/5 + 1;
 	int m = *month = (h/153+2)%12 + 1;
-	int y = *year = e/1461 - 4716 + (14-m)/12;
+	int y = *year = *isoyear = e/1461 - 4716 + (14-m)/12;
 	int w = *wday = jd%7 + 1;
 
 	int yday = jd - ymd2jd(y, 1, 1) + 1;
 	*isoweek = (yday - w + 10) / 7;
 	if (*isoweek < 1)
-		jd2ymdwi(ymd2jd(y - 1, 12, 31), &_, &_, &_, &_, isoweek);
+		jd2ymdwi(ymd2jd(y - 1, 12, 31), &_, &_, &_, &_, isoweek, isoyear);
 	else if (*isoweek == 53 &&
-	    ymd2jd(y+1, 1, 1) + (7 - (y+y/4-y/100+y/400+3)%7 - 4) <= jd)
+	    ymd2jd(y+1, 1, 1) + (7 - (y+y/4-y/100+y/400+3)%7 - 4) <= jd) {
 		*isoweek = 1;
+		*isoyear = y + 1;
+	}
 }
 
 void
@@ -117,8 +120,10 @@ main(int argc, char *argv[])
 	int d = tm->tm_mday;
 	int w;
 	int i;
+	int g;
 	int cw;
 	int ci;
+	int cg;
 
 	int c;
 	while ((c = getopt(argc, argv, "13cCid:y")) != -1)
@@ -134,7 +139,7 @@ main(int argc, char *argv[])
 		}
 
 	long today = ymd2jd(y, m, d);
-	jd2ymdwi(today, &y, &m, &d, &cw, &ci);
+	jd2ymdwi(today, &y, &m, &d, &cw, &ci, &cg);
 
 	int max_weeks = 1;
 	int max_months = 0;
@@ -153,9 +158,9 @@ main(int argc, char *argv[])
 
 	long jd = ymd2jd(y, m, d);
 
-	jd2ymdwi(jd, &y, &m, &d, &w, &i);
+	jd2ymdwi(jd, &y, &m, &d, &w, &i, &g);
 	jd -= (w - 1);   // skip back to last monday.
-	jd2ymdwi(jd, &y, &m, &d, &w, &i);
+	jd2ymdwi(jd, &y, &m, &d, &w, &i, &g);
 
 	int color = isatty(1) || flagC;
 
@@ -183,15 +188,16 @@ main(int argc, char *argv[])
 	for (int weeks = 0, months = 0;
 	     flagi || (max_months && months < max_months) || (weeks < max_weeks);
 	     weeks++) {
-		if (color && i == ci)
+		if (color && i == ci && g == cg)
 			printf("\e[7m");
 		printf("%02d", i);
-		if (color && i == ci)
+		if (color && i == ci && g == cg)
 			printf("\e[27m");
 		printf(" ");
 
-		int ey, em, ed, ew, ei;
-		jd2ymdwi(jd + 6, &ey, &em, &ed, &ew, &ei);   /* end of week */
+		int ey, em, ed, ew, ei, eg;
+		/* end of week */
+		jd2ymdwi(jd + 6, &ey, &em, &ed, &ew, &ei, &eg);
 
 		if (ed <= 7 || weeks == 0) {
 			printf("%s ", monthname[em]);
@@ -209,7 +215,7 @@ main(int argc, char *argv[])
 			    color && (jd == today) ? "\e[27m" : "");
 
 			jd++;
-			jd2ymdwi(jd, &y, &m, &d, &w, &i);
+			jd2ymdwi(jd, &y, &m, &d, &w, &i, &g);
 		} while (w != 1);
 
 		printf("\n");
