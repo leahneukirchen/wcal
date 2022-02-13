@@ -109,6 +109,13 @@ parse_isodate(char *optarg, int *y, int *m, int *d)
 	}
 }
 
+void
+usage()
+{
+	fprintf(stderr, "Usage: wcal [-13yci] [-d YYYY[-MM[-DD]]]\n");
+	exit(1);
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -135,8 +142,11 @@ main(int argc, char *argv[])
 		case 'y': flagy = 1; break;
 		case 'i': flagi = 1; break;
 		case 'd': parse_isodate(optarg, &y, &m, &d); break;
-		case '?': exit(1);
+		case '?': usage();
 		}
+
+	if (argc > optind)
+		usage();
 
 	long today = ymd2jd(y, m, d);
 	jd2ymdwi(today, &y, &m, &d, &cw, &ci, &cg);
