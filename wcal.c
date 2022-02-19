@@ -103,8 +103,25 @@ parse_isodate(char *optarg, int *y, int *m, int *d)
 			*m = atoi(optarg+5);
 
 			if (isdigit(optarg[8]) && isdigit(optarg[9]) &&
-			    (!optarg[10] || optarg[10] == '-'))
+			    !optarg[10])
 				*d = atoi(optarg+8);
+		} else if (optarg[5] == 'W' &&
+		    isdigit(optarg[6]) && isdigit(optarg[7]) &&
+		    (!optarg[8] || optarg[8] == '-')) {
+			int w = atoi(optarg+6);
+			int wd = 1;
+
+			if (isdigit(optarg[9]) && !optarg[10])
+				wd = atoi(optarg+9);
+
+			int _;
+			int corr;
+			long jan4 = ymd2jd(*y, 1, 4);
+			jd2ymdwi(jan4, &_, &_, &_, &corr, &_, &_);
+			corr += 3;
+
+			jd2ymdwi(jan4 - 4 + 7*w + wd - corr,
+			    y, m, d, &_, &_, &_);
 		}
 	}
 }

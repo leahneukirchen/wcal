@@ -1,4 +1,4 @@
-.Dd January 30, 2021
+.Dd Feburary 19, 2022
 .Dt WCAL 1
 .Os
 .Sh NAME
@@ -8,6 +8,7 @@
 .Nm
 .Op Fl 13yci
 .Op Fl d Ar YYYY Ns Op Ar -MM Ns Op Ar -DD
+.Op Fl d Ar YYYY Ns Ar - Ns Cm W Ns Ar WW Ns Op Ar -D
 .Sh DESCRIPTION
 The
 .Nm
@@ -35,6 +36,9 @@ Show the calendar for a different date than today.
 Implies
 .Fl y
 in case only a year is passed.
+.It Fl d Ar YYYY Ns Ar - Ns Cm W Ns Ar WW Ns Op Ar -D
+Show the calendar for a different date (ISO week notation) than today.
+Defaults to Monday if no week day is given.
 .El
 .Sh EXIT STATUS
 .Ex -std

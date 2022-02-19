@@ -4,7 +4,7 @@ NAME
      wcal – ISO weekly calendar
 
 SYNOPSIS
-     wcal [-13yci] [-d YYYY[-MM[-DD]]]
+     wcal [-13yci] [-d YYYY[-MM[-DD]]] [-d YYYY-WWW[-D]]
 
 DESCRIPTION
      The wcal utility prints a week-oriented calendar.  Each week is prefixed
@@ -28,6 +28,10 @@ DESCRIPTION
      -d YYYY[-MM[-DD]]
              Show the calendar for a different date than today.  Implies -y in
              case only a year is passed.
+
+     -d YYYY-WWW[-D]
+             Show the calendar for a different date (ISO week notation) than
+             today.  Defaults to Monday if no week day is given.
 
 EXIT STATUS
      The wcal utility exits 0 on success, and >0 if an error occurs.
@@ -53,4 +57,4 @@ CAVEATS
      This program uses a proleptic Gregorian Calendar and may yield unexpected
      results before 1752.  The year 0000 starts on a Saturday.
 
-Void Linux                     January 30, 2021                     Void Linux
+Void Linux                     Feburary 19, 2022                    Void Linux
